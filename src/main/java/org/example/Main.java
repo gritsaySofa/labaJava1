@@ -3,53 +3,159 @@ import org.example.ContainerNum;
 
 import java.awt.*;
 import java.util.*;
+import java.util.Scanner;
 
 
 public class Main{
     public static void main(String[] args) {
-        ContainerNum containers = new ContainerNum();
-        containers.addToFirst(1);
-        containers.addToFirst(3);
-        containers.addToFirst(5);
-        containers.addToFirst(7);
-        containers.addToFirst(9);
+        ContainerNum container = new ContainerNum();
+        Scanner scanner = new Scanner(System.in);
 
-        containers.print();
+        while (true) {
+            printMenu();
+            int choice = getIntInput(scanner, "Выберите действие: ");
 
-        containers.addToLast(10);
-        containers.addToLast(8);
-        containers.addToLast(6);
-        containers.addToLast(4);
-        containers.addToLast(2);
+            switch (choice) {
+                case 1:
+                    addMultipleToFirst(container, scanner);
+                    break;
 
-        containers.print();
+                case 2:
+                    addMultipleToLast(container, scanner);
+                    break;
 
-        containers.addToIndex(11,1);
-        containers.addToIndex(12,2);
+                case 3:
+                    addSingleToIndex(container, scanner);
+                    break;
 
-        containers.print();
+                case 4:
+                    try {
+                        int removed = container.takeFirst();
+                        System.out.println("Удалено из начала: " + removed);
+                    } catch (IllegalStateException e) {
+                        System.out.println("Ошибка: " + e.getMessage());
+                    }
+                    break;
 
-        int takingFirstNumValue = containers.takeFirst();
-        System.out.println(takingFirstNumValue);
+                case 5:
+                    try {
+                        int removed = container.takeLast();
+                        System.out.println("Удалено из конца: " + removed);
+                    } catch (IllegalStateException e) {
+                        System.out.println("Ошибка: " + e.getMessage());
+                    }
+                    break;
 
-        int takingLastNumValue = containers.takeLast();
-        System.out.println(takingLastNumValue);
+                case 6:
+                    removeByIndex(container, scanner);
+                    break;
 
-        int takingIndexValue = containers.takeIndex(5);
-        System.out.println(takingIndexValue);
+                case 7:
+                    System.out.println("Текущее содержимое контейнера:");
+                    container.print();
+                    break;
 
-        containers.print();
+                case 8:
+                    System.out.println("Размер контейнера: " + container.getSize());
+                    break;
 
-        containers.deleteFromFirst();
-        containers.print();
+                case 0:
+                    System.out.println("Программа завершена.");
+                    scanner.close();
+                    return;
 
-        containers.deleteFromLast();
-        containers.print();
-
-        containers.deleteFromIndex(7);
-        containers.print();
-
+                default:
+                    System.out.println("Неверный выбор, попробуйте снова.");
+            }
+        }
     }
 
+    private static void addMultipleToFirst(ContainerNum container, Scanner scanner) {
+        while (true) {
+            System.out.println("\nТекущее содержимое:");
+            container.print();
 
+            String input = getStringInput(scanner,
+                    "Введите число для добавления в начало (или 'q' для выхода): ");
+
+            if (input.equalsIgnoreCase("q")) {
+                return;
+            }
+
+            try {
+                int value = Integer.parseInt(input);
+                container.addToFirst(value);
+                System.out.println("Добавлено: " + value);
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: введите целое число или 'q'!");
+            }
+        }
+    }
+
+    private static void addMultipleToLast(ContainerNum container, Scanner scanner) {
+        while (true) {
+            System.out.println("\nТекущее содержимое:");
+            container.print();
+
+            String input = getStringInput(scanner,
+                    "Введите число для добавления в конец (или 'q' для выхода): ");
+
+            if (input.equalsIgnoreCase("q")) {
+                return;
+            }
+
+            try {
+                int value = Integer.parseInt(input);
+                container.addToLast(value);
+                System.out.println("Добавлено: " + value);
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: введите целое число или 'q'!");
+            }
+        }
+    }
+
+    private static void addSingleToIndex(ContainerNum container, Scanner scanner) {
+        int value = getIntInput(scanner, "Введите число: ");
+        int index = getIntInput(scanner, "Введите индекс: ");
+        container.addToIndex(value, index);
+    }
+
+    private static void removeByIndex(ContainerNum container, Scanner scanner) {
+        int index = getIntInput(scanner, "Введите индекс для удаления: ");
+        try {
+            int removed = container.takeIndex(index);
+            System.out.println("Удалено: " + removed);
+        } catch (IllegalStateException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+    }
+
+    private static void printMenu() {
+        System.out.println("\nМеню:");
+        System.out.println("1. Добавить в начало");
+        System.out.println("2. Добавить в конец");
+        System.out.println("3. Добавить по индексу");
+        System.out.println("4. Удалить из начала");
+        System.out.println("5. Удалить из конца");
+        System.out.println("6. Удалить по индексу");
+        System.out.println("7. Просмотреть содержимое");
+        System.out.println("8. Показать размер");
+        System.out.println("0. Выход");
+    }
+
+    private static int getIntInput(Scanner scanner, String message) {
+        while (true) {
+            try {
+                System.out.print(message);
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: введите целое число!");
+            }
+        }
+    }
+
+    private static String getStringInput(Scanner scanner, String message) {
+        System.out.print(message);
+        return scanner.nextLine().trim();
+    }
 }
