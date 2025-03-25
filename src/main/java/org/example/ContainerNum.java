@@ -1,9 +1,9 @@
 package org.example;
 
 public class ContainerNum {
-    private static class ContainerNumbers {
-        int number;
-        ContainerNumbers next;
+    public static class ContainerNumbers {
+        public int number;
+        public ContainerNumbers next;
 
         public ContainerNumbers(int number) {
             this.number = number;
@@ -93,9 +93,12 @@ public class ContainerNum {
             first = null;
             last = null;
         } else {
-            ContainerNumbers prev = getIndex(last.number - 2);
-            prev.next = null;
-            last = prev;
+            ContainerNumbers current = first;
+            while (current.next != last) {
+                current = current.next;
+            }
+            current.next = null;
+            last = current;
         }
         size--;
     }
@@ -131,9 +134,12 @@ public class ContainerNum {
             first = null;
             last = null;
         } else {
-            ContainerNumbers prev = getIndex(first.number - 2);
-            prev.next = null;
-            last = prev;
+            ContainerNumbers current = first;
+            while (current.next != last) {
+                current = current.next;
+            }
+            current.next = null;
+            last = current;
         }
         size--;
         return takingValue;
