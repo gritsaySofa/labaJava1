@@ -5,8 +5,14 @@ import java.awt.*;
 import java.util.*;
 import java.util.Scanner;
 
-
+/**
+ * Демонстрация работы контейнера
+ */
 public class Main{
+    /**
+     * Создает экземпляр контейнера и запускает меню
+     * @param args аргументы командной строки
+     */
     public static void main(String[] args) {
         ContainerNum container = new ContainerNum();
         Scanner scanner = new Scanner(System.in);
@@ -70,6 +76,11 @@ public class Main{
         }
     }
 
+    /**
+     * Добавляет несколько элементов в начало контейнера, так как мне не нравилось что постоянно нужно выходить в меню
+     * @param container контейнер для добавления элементов
+     * @param scanner объект для чтения пользовательского ввода
+     */
     private static void addMultipleToFirst(ContainerNum container, Scanner scanner) {
         while (true) {
             System.out.println("\nТекущее содержимое:");
@@ -92,6 +103,11 @@ public class Main{
         }
     }
 
+    /**
+     * Добавляет несколько элементов в конец контейнера, по тем же причинам что и в прошлом
+     * @param container контейнер для добавления элементов
+     * @param scanner объект для чтения пользовательского ввода
+     */
     private static void addMultipleToLast(ContainerNum container, Scanner scanner) {
         while (true) {
             System.out.println("\nТекущее содержимое:");
@@ -114,12 +130,22 @@ public class Main{
         }
     }
 
+    /**
+     * Добавляем один элемент по указанному индексу
+     * @param container контейнер для добавления
+     * @param scanner бъект для чтения ввода
+     */
     private static void addSingleToIndex(ContainerNum container, Scanner scanner) {
         int value = getIntInput(scanner, "Введите число: ");
         int index = getIntInput(scanner, "Введите индекс: ");
         container.addToIndex(value, index);
     }
 
+    /**
+     * Удаляет элемент по индексу
+     * @param container контейнер для удаления
+     * @param scanner объект для чтения ввода
+     */
     private static void removeByIndex(ContainerNum container, Scanner scanner) {
         int index = getIntInput(scanner, "Введите индекс для удаления: ");
         try {
@@ -130,6 +156,9 @@ public class Main{
         }
     }
 
+    /**
+     * Менюшка, что еще сказать
+     */
     private static void printMenu() {
         System.out.println("\nМеню:");
         System.out.println("1. Добавить в начало");
@@ -143,6 +172,12 @@ public class Main{
         System.out.println("0. Выход");
     }
 
+    /**
+     * Обработка исключения на неправильный ввод
+     * @param scanner объект для ввода
+     * @param message сообщение для ввода
+     * @return введенное пользователем число
+     */
     private static int getIntInput(Scanner scanner, String message) {
         while (true) {
             try {
@@ -154,6 +189,12 @@ public class Main{
         }
     }
 
+    /**
+     * Получает строковый ввод от пользователя с консоли
+     * @param scanner объект для ввода
+     * @param message сообщение для ввода
+     * @return введенная пользователем строка
+     */
     private static String getStringInput(Scanner scanner, String message) {
         System.out.print(message);
         return scanner.nextLine().trim();
